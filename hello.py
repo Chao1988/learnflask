@@ -78,3 +78,7 @@ def index():
                            current_time=datetime.utcnow(), form=form, name=session.get('name'),
                            known=session.get('known', False))
 
+
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db, User=User, Role=Role)
