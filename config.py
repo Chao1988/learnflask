@@ -31,16 +31,16 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:RVhT2c!v@localhost:3306/devmysql?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:' + os.getenv('MYSQL_ROOT_PASSWORD') + '@localhost:3306/devmysql?charset=utf8mb4'
 
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:RVhT2c!v@localhost:3306/testmysql?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:' + os.getenv('MYSQL_ROOT_PASSWORD') + '@localhost:3306/testmysql?charset=utf8mb4'
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:RVhT2c!v@localhost:3306/promysql?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:' + os.getenv('MYSQL_ROOT_PASSWORD') + '@localhost:3306/promysql?charset=utf8mb4'
 
 
 config = {
