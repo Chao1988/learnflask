@@ -7,6 +7,12 @@
 <div class="page-header">
     <h1>Tw  China Office MacBook Pro in stock overview</h1>
     <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>
+    Hello，
+    {% if current_user.is_authenticated %}
+        {{ current_user.username}}
+    {% else %}
+        Stranger
+    {% endif  %}
     {% if not known %}
     <p>Please to meet you!</p>
     {% else %}
