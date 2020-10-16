@@ -6,10 +6,12 @@
    Date:          2020/5/21 6:58 PM
 -------------------------------------------------
 """
-from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask import current_app
+from . import db
 
 
 class Role(db.Model):
@@ -43,6 +45,24 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+    confirmed = db.Column(db.Boolean, default=False)
+
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id}).decode('utf-8')
+
+    def confirm(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        return True
 
 
 @login_manager.user_loader
